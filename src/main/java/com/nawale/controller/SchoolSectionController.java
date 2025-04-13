@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nawale.models.SchoolSection;
@@ -45,10 +46,16 @@ public class SchoolSectionController {
                 .orElseThrow(() -> new RuntimeException("Section not found"));
     }
     
-    @DeleteMapping("/delete/{sectionKey}")
-    public void deleteSectionByKey(@PathVariable String key)
+    @DeleteMapping("/delete/key/{sectionKey}")
+    public void deleteSectionByKey(@PathVariable String sectionKey)
     {
-    	service.deleteSectionByKey(key);
+    	service.deleteSectionByKey(sectionKey);
+    }
+    
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteSectionById(@RequestParam long id)
+    {
+    	 return service.deleteSectionById(id);
     }
 
     @PutMapping("/{sectionKey}")

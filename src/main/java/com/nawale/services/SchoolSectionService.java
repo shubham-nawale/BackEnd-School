@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.nawale.models.SchoolSection;
 import com.nawale.repo.SchoolSectionRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class SchoolSectionService {
     @Autowired private SchoolSectionRepository repo;
@@ -28,6 +30,7 @@ public class SchoolSectionService {
         return repo.findBySectionKey(sectionKey);
     }
     
+    @Transactional
     public ResponseEntity<String> deleteSectionByKey(String key) {
 
         Optional<SchoolSection> sectionOpt = repo.findBySectionKey(key);
@@ -41,6 +44,18 @@ public class SchoolSectionService {
         }
     }
     
+    @Transactional
+    public ResponseEntity<String> deleteSectionById(long id){
+    	Optional<SchoolSection> sectionOpt = repo.findById(id);
+    	
+    	if(sectionOpt.isPresent()) {
+    		repo.deleteById(id);
+    		return ResponseEntity.ok("Section with id "+ id + " deleted Successfully.");
+    	} else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Section with id '" + id + "' not found.");
+    	}
+    	
+    }
     public SchoolSection updateSection(String sectionKey, SchoolSection updatedData) {
         return repo.findBySectionKey(sectionKey)  // This returns Optional<SchoolSection>
                 .map(existing -> {
