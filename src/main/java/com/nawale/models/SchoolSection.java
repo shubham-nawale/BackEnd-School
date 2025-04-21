@@ -15,7 +15,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
+import lombok.Data;
+import lombok.Getter;
 
+@Data
 @Entity
 public class SchoolSection {
     @Id
@@ -35,56 +38,9 @@ public class SchoolSection {
     
     private String heroImage;
     
+    @Getter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "school_section_id")
     private List<Features> features;
 
-    
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id, CallToActionButton cta) {
-		this.id = id;
-		this.cta = cta;
-	}
-	public String getSectionByKey() {
-		return sectionKey;
-	}
-	public void setSectionKey(String section) {
-		this.sectionKey = section;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public CallToActionButton getCta() {
-		return cta;
-	}
-	public void setCta(CallToActionButton cta) {
-		this.cta = cta;
-	}
-	public String getHeroImage() {
-		return heroImage;
-	}
-	public void setHeroImage(String heroImage) {
-		this.heroImage = heroImage;
-	}
-	public List<Features>getFeatures() {
-		return features;
-	}
-	public void setFeatures(List<Features> features) {
-		this.features = features;
-	}
-	
-	
-    
-	
 }

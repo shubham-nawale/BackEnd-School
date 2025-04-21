@@ -9,6 +9,7 @@ public class RegisterDTO {
     private String email;
     private String password;
     private String mobile;
+    
 	public String getFullName() {
 		return fullName;
 	}

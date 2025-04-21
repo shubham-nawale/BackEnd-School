@@ -1,7 +1,11 @@
 package com.nawale.services;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +21,18 @@ public class UserService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public String registerUser(RegisterDTO registerDTO) {
+    public ResponseEntity<Map<String, String>> registerUser(RegisterDTO registerDTO) {
+
+        Map<String, String> response = new HashMap<>();
 
         // Check if the email or mobile already exists
         if (userRepository.existsByEmail(registerDTO.getEmail())) {
-            return "Email already exists!";
+            response.put("message", "Email already exists!");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
-
-        if (userRepository.existsByMobile(registerDTO.getMobile())) {
-            return "Mobile number already registered!";
+        else if (userRepository.existsByMobile(registerDTO.getMobile())) {
+            response.put("message", "Mobile number already registered!");
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
 
         // Encrypt the password
@@ -40,7 +47,10 @@ public class UserService {
 
         userRepository.save(user);
 
-        return "Registration successful!";
+
+        response.put("message", "Registration successful!");
+        
+        return ResponseEntity.ok(response);
     }
     
     public boolean authenticateUser(String email, String rawPassword) {
